@@ -124,14 +124,3 @@ not pollute the global options space with, you can place them in `config/initial
 or `config/initializers/Rmarkdown` and access those resources with
 `resource('config/initializers/knitr)` or `resource('config/initializers/Rmarkdown)` within
 other Syberia resources (models or `lib` objects).
-
-[lockfile](lockfile.yml)
-----------
-
-Just like a Ruby application that uses [bundler](http://bundler.io/), sometimes it is important
-that everyone has the same set of dependencies. For example, if we update
-[tundra](http://github.com/robertzk/tundra) with a critical fix that affects production
-model objects, we should make sure everyone uses this fix when training new models
-that will go into production. The lockfile ensures that everyone is using the same
-package versions for those packages that have critical fixes. You can look at the
-precise logic of how this is enforced in [the lockfile helper](helpers/lockfile.R).

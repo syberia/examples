@@ -1,5 +1,4 @@
 if (interactive()) {
-  resource('config/helpers/lockfile')
 
   if (resource_exists('config/global')) {
     # TODO: (RK) Create a separate namespace and inject into search path instead
@@ -11,4 +10,3 @@ if (interactive()) {
   }
 
 }
-
