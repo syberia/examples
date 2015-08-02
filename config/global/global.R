@@ -36,13 +36,8 @@ last_model <- function() { director$.cache$last_model }
 last_run <- function() { director$.cache$last_run }
 active_runner <- function() { director$.cache$last_model_runner }
 
-run_model <- define('run_model', local = TRUE)[[1]](director)
-run <- run_model
-
 keymap <- list(
-  A = function() last_run()$after$data,
-  B = function() last_run()$before$data,
-  E = function() last_run(),
+  A = function() active_runner()$context$data,
   M = function() A$model_stage$model,
   S = function() active_runner()
 )

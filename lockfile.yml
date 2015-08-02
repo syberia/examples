@@ -1,9 +1,8 @@
 packages:
-  -
-    name: tidyr
-    version: 0.2.0
-    repo: hadley/tidyr
-    ref: v0.2.0
+  - name: R6
+    version: 2.1.0
+    repo: wch/R6
+    ref: v2.1.0
   -
     name: fortunes
     version: 1.5.2

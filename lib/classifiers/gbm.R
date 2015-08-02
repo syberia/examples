@@ -65,6 +65,6 @@ predict <- function(dataframe, predict_args = list()) {
     output$perf[[perf_method]] <<-
       gbm.perf(output$model, method = perf_method, plot.it = FALSE)
 
-  predict.gbm(object = output$model, newdata = dataframe,
+  predict(object = output$model, newdata = dataframe,
     output$perf[[perf_method]], type = type)
 }
