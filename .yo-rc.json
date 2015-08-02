@@ -1,0 +1,7 @@
+{
+  "generator-syberia": {
+    "filters": {
+      "packages": false
+    }
+  }
+}

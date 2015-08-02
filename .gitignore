@@ -1,13 +1,22 @@
-# History files
+*.csv
+**/*.csv
+.Rdata
 .Rhistory
-.Rapp.history
-
-# Example code in package build process
-*-Ex.R
-
-# RStudio files
-.Rproj.user/
-
-# produced vignettes
-vignettes/*.html
-vignettes/*.pdf
+.Rproj.user
+*.Rproj
+.syberia
+*.DS_Store
+*.r.swp
+**/*.png
+**/README_cache
+**/*.html
+config/database.yml
+tmp/*
+.DS_Store
+**/.DS_Store
+**/s3:
+./.registry
+Rplots.pdf
+*.rds
+**/*.rds
+**/.Rapp.history
