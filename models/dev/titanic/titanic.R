@@ -85,9 +85,7 @@ list(
 
   # Once the data is prepared and is in the right format we are ready to
   # do the modeling itself.
-  # You can use any R package to create a *classifier*. It may be a poor name
-  # choice, since you can create not only classification models, but it
-  # got stuck.
+  # You can use any R package to create a *classifier*.
   # Classifiers are determined by the `train` and `predict` functions.
   # The output of the model stage is a [tundraContainer](github.com/robertzk/tundra)
   # A tundracontainer is an object that contains all the information necessary
