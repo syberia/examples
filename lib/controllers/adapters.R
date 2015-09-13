@@ -35,4 +35,3 @@ function(input, output, resource, director) {
 
   adapters[[adapter_name]]
 }
-

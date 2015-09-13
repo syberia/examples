@@ -1,11 +1,16 @@
-# Determine fresh modeling environment.
-#
-# Modeling environments can either be a normal R environment
-# object or a tracked_environment from the
-# objectdiff package. The global option `syberia.environment_type`
-# can be either "environment" or "tracked_environment".
-# The default is to use a "tracked_environment", since it offers
-# approximately the same speed for much less memory overhead.
+#' Determine fresh modeling environment.
+#'
+#' Modeling environments can either be a normal R \code{environment}
+#' object or a \code{\link[objectdiff]{tracked_environment}} from the
+#' objectdiff package. The global option syberia.environment_type
+#' can be either \code{"environment"} or \code{"tracked_environment"}.
+#' The default is to use a \code{"tracked_environment"}, since it offers
+#' approximately the same speed for much less memory overhead.
+#'
+#' @return \code{new.env()} or \code{tracked_environment()} according as
+#'   \code{getOption('syberia.environment_type')} is
+#'   \code{"environment"} or \code{"tracked_environment"}, respectively,
+#'   or the latter by default.
 model_env <- function() {
   if (identical(getOption("syberia.environment_type"), "environment")) {
     new.env()
@@ -14,36 +19,41 @@ model_env <- function() {
   }
 }
 
-# Return a stageRunner object that parametrizes a list of stages.
-#
-# Each stage is first fed through a function that converts it to a stageRunner
-# or a function. For example, list(import = X, ...) gets converted by,
-# amongst other things, looking for a variable import_stage and passing
-# in X.
-#
-# This kind of procedure allows one to define new stage types dynamically,
-# and "reach in" and execute only sub-parts of stages by using stageRunner
-# effectively.
-#
-# @param stages a list of lists. Each sublist is the argument to its
-#    named stage.
-# @param modelenv environment. The modeling environment with which to
-#    construct the stagerunner. All operations will be performed on this
-#    environment. The default is \code{model_env()} (see above).
-# @param model_version character. The version of the model. Used for
-#    injecting in the model_card stage.
-# @return stageRunner parametrizing the given stages
+#' Return a stageRunner object that parametrizes a list of stages.
+#'
+#' Each stage is first fed through a function that converts it to a stageRunner
+#' or a function. For example, list(import = X, ...) gets converted by,
+#' amongst other things, looking for a variable import_stage and passing
+#' in X.
+#'
+#' This kind of procedure allows one to define new stage types dynamically,
+#' and "reach in" and execute only sub-parts of stages by using stageRunner
+#' effectively.
+#'
+#' @param stages a list of lists. Each sublist is the argument to its
+#'    named stage.
+#' @param modelenv environment. The modeling environment with which to
+#'    construct the stagerunner. All operations will be performed on this
+#'    environment. The default is \code{model_env()} (see above).
+#' @param model_version character. The version of the model. Used for
+#'    injecting in the model_card stage.
+#' @return stageRunner parametrizing the given stages
+#' @export
 construct_stage_runner <- function(resource) {
   function(stages, model_version, modelenv = model_env()) {
     if (is.stagerunner(stages)) return(stages)
 
     stopifnot(is.list(stages))
+
     # Prepopulated constants.
     modelenv$model_version <- model_version
 
-    if ("" %in% names(stages) || is.null(names(stages))) {
+    if (NA %in% names(stages) || "" %in% names(stages) || is.null(names(stages))) {
       stop("All model steps must be named (e.g., import, data, model, ...).", call. = FALSE)
     }
+
+    # TODO: (RK) Remove this hack. You shouldn't be running data import on CI.
+    if (nzchar(Sys.getenv("CI"))) { stages$import <- NULL }
 
     stages <- structure(lapply(seq_along(stages), function(stage_index) {
       stage_name <- names(stages)[stage_index]
@@ -75,19 +85,19 @@ construct_stage_runner <- function(resource) {
     # TODO: (RK) Get rid of this awful hack to normalize a nested stageRunner.
     set_env <- function(x) {
       if (is.stagerunner(x)) {
-        x$context <- modelenv
+        x$.context <- modelenv
         for (i in seq_along(x$stages)) set_env(x$stages[[i]])
       }
       else if (is(x, 'stageRunnerNode')) {
-        x$cached_env <- NULL
+        x$.cached_env <- NULL
         x$.context <- modelenv
         x$executed <- FALSE
       }
     }
     set_env(runner)
     first_leaf <- stagerunner:::treeSkeleton$new(runner)$first_leaf()$object
-    first_leaf$cached_env <- new.env()
-    stagerunner:::copy_env(first_leaf$cached_env, modelenv)
+    first_leaf$.cached_env <- new.env()
+    stagerunner:::copy_env(first_leaf$.cached_env, modelenv)
     runner$.set_parents()
 
     runner
