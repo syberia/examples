@@ -83,7 +83,7 @@ packages:
     repo: peterhurford/batchman
   -
     name: cachemeifyoucan
-    version: 0.2.0.6
+    version: 0.2.1.2
     repo: robertzk/cachemeifyoucan
   -
     name: objectdiff
@@ -95,7 +95,7 @@ packages:
     repo: robertzk/stagerunner
   -
     name: director
-    version: 0.2.1
+    version: 0.3.0.4
     repo: robertzk/director
   -
     name: syberiaMungebits
@@ -111,7 +111,7 @@ packages:
     repo: robertzk/syberiaStages
   -
     name: syberia
-    version: 0.4.4.1
+    version: 0.5.0.3
     repo: robertzk/syberia
 
 development:
