@@ -5,7 +5,7 @@ if (!"bettertrace" %in% utils::installed.packages()[,1]) devtools::install_githu
 library(bettertrace);
 if (!require(Ramd)) devtools::install_github("robertzk/Ramd")
 Ramd::packages("magrittr")
-if (!nzchar(Sys.getenv("CI")) && (!is.element("lockbox", installed.packages()[, 1]) || utils::packageVersion("lockbox") != package_version("0.1.9.6"))) {
+if (!nzchar(Sys.getenv("CI")) && (!is.element("lockbox", installed.packages()[, 1]) || utils::packageVersion("lockbox") != package_version("0.1.10"))) {
   devtools::install_github("robertzk/lockbox")
 }
 

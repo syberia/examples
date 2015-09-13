@@ -36,16 +36,17 @@ list(
     # The right-hand side is the mungebit invocation.
     "Factor to character"   = list(column_transformation(as.character), is.factor)
 
-    # Both `column_transformation` and `multi_column_transformation` come from [syberiaMungebits] package
-    # This particular mungebit creates a new variable - *name_length*
-    ,"Name length variable" = list(multi_column_transformation(function(name) nchar(name)), "name", "name_length")
+    # `column_transformation`, `multi_column_transformation`, `new_varialbe` come from [syberiaMungebits] package
+    # This particular mungebit creates a new variable - *has_paren*
     ,"has paren in name"    = list(multi_column_transformation(function(name) grepl("(", fixed = TRUE, name)), "name", "has_paren")
-    ,"mr indicator"         = list(multi_column_transformation(function(name) grepl("Mr.", fixed = TRUE, name)), "name", "is_mister")
-    ,"mrs indicator"        = list(multi_column_transformation(function(name) grepl("Mrs.", fixed = TRUE, name)), "name", "is_missus")
-    ,"ms indicator"         = list(multi_column_transformation(function(name) grepl("Ms\\.|Miss\\.", name)), "name", "is_miss")
-    ,"master indicator"     = list(multi_column_transformation(function(name) grepl("Master.", fixed = TRUE, name)), "name", "is_master")
-    ,"rev indicator"        = list(multi_column_transformation(function(name) grepl("Rev.", fixed = TRUE, name)), "name", "is_rev")
-    ,"dr indicator"         = list(multi_column_transformation(function(name) grepl("Dr.", fixed = TRUE, name)), "name", "is_dr")
+    # This syntax is a little bit cleaner
+    ,"Name length variable" = list(new_variable, function(name) nchar(name), "name_length")
+    ,"mr indicator"         = list(new_variable, function(name) grepl("Mr.", fixed = TRUE, name), "is_mister")
+    ,"mrs indicator"        = list(new_variable, function(name) grepl("Mrs.", fixed = TRUE, name), "is_missus")
+    ,"ms indicator"         = list(new_variable, function(name) grepl("Ms\\.|Miss\\.", name), "is_miss")
+    ,"master indicator"     = list(new_variable, function(name) grepl("Master.", fixed = TRUE, name), "is_master")
+    ,"rev indicator"        = list(new_variable, function(name) grepl("Rev.", fixed = TRUE, name), "is_rev")
+    ,"dr indicator"         = list(new_variable, function(name) grepl("Dr.", fixed = TRUE, name), "is_dr")
 
     # Sometimes it's easy to write a mungebit by just in-lining an existing component.
     # However sometimes you do need to perform some non-trivial logic. In this case you can
@@ -57,24 +58,24 @@ list(
     ,"fare_class"           = list(multi_column_transformation(function(klass, fare) { ave(fare, klass, FUN = mean) }), c("pclass", "fare"), "class_fare")
     ,"fare_diff_class"      = list(multi_column_transformation(`-`), c("fare", "class_fare"), "fare_diff_class")
     ,"fare_pct_class"       = list(multi_column_transformation(`/`), c("fare", "class_fare"), "fare_pct_class")
-    ,"cabin_number"         = list(multi_column_transformation(function(cabin) as.integer(gsub("[^0-9]+", "", cabin))), "cabin", "cabin_number")
-    ,"cabin_letter"         = list(multi_column_transformation(function(cabin) factor(gsub("[^a-zA-Z]+", "", cabin))), "cabin", "cabin_letter")
-    ,"cabin_single_letter"  = list(multi_column_transformation(function(cabin) factor(gsub("^(.).*$", "\\1", cabin))), "cabin_letter", "cabin_single_letter")
+    ,"cabin_number"         = list(new_variable, function(cabin) as.integer(gsub("[^0-9]+", "", cabin)), "cabin_number")
+    ,"cabin_letter"         = list(new_variable, function(cabin) factor(gsub("[^a-zA-Z]+", "", cabin)), "cabin_letter")
+    ,"cabin_single_letter"  = list(new_variable, function(cabin_letter) factor(gsub("^(.).*$", "\\1", cabin_letter)), "cabin_single_letter")
     ,"fare_cabin"           = list(multi_column_transformation(function(title, fare) { ave(fare, title, FUN = mean) }), c("cabin_single_letter", "fare"), "cabin_fare")
     ,"fare_diff_cabin"      = list(multi_column_transformation(`-`), c("fare", "cabin_fare"), "fare_diff_cabin")
     ,"fare_pct_cabin"       = list(multi_column_transformation(`/`), c("fare", "cabin_fare"), "fare_pct_cabin")
 
-    ,"PC ticket"            = list(multi_column_transformation(function(name) grepl("PC ", fixed = TRUE, name)), "ticket", "has_pc_ticket")
-    ,"A  ticket"            = list(multi_column_transformation(function(name) grepl("A/", fixed = TRUE, name)), "ticket", "has_a_ticket")
-    ,"SC ticket"            = list(multi_column_transformation(function(name) grepl("S.C.", fixed = TRUE, name)), "ticket", "has_sc_ticket")
-    ,"CA ticket"            = list(multi_column_transformation(function(name) grepl("C.A", fixed = TRUE, name)), "ticket", "has_ca_ticket")
-    ,"CA ticket"            = list(multi_column_transformation(function(name) grepl("C\\.A|CA", name)), "ticket", "has_ca_ticket")
-    ,"SP ticket"            = list(multi_column_transformation(function(name) grepl("SP|S\\.P", name)), "ticket", "has_sp_ticket")
-    ,"W  ticket"            = list(multi_column_transformation(function(name) grepl("W", name)), "ticket", "has_w_ticket")
-    ,"SOC ticket"           = list(multi_column_transformation(function(name) grepl("SOC|S\\.O\\.C", name)), "ticket", "has_soc_ticket")
-    ,"STON ticket"          = list(multi_column_transformation(function(name) grepl("SOTON|STON", name)), "ticket", "has_ston_ticket")
-    ,"LINE ticket"          = list(multi_column_transformation(function(name) grepl("LINE", fixed = TRUE, name)), "ticket", "has_ston_ticket")
-    ,"PARIS ticket"         = list(multi_column_transformation(function(name) grepl("PARIS", fixed = TRUE, name)), "ticket", "has_paris_ticket")
+    ,"PC ticket"            = list(new_variable, function(ticket) grepl("PC ", fixed = TRUE, ticket), "has_pc_ticket")
+    ,"A  ticket"            = list(new_variable, function(ticket) grepl("A/", fixed = TRUE, ticket), "has_a_ticket")
+    ,"SC ticket"            = list(new_variable, function(ticket) grepl("S.C.", fixed = TRUE, ticket), "has_sc_ticket")
+    ,"CA ticket"            = list(new_variable, function(ticket) grepl("C.A", fixed = TRUE, ticket), "has_ca_ticket")
+    ,"CA ticket"            = list(new_variable, function(ticket) grepl("C\\.A|CA", ticket), "has_ca_ticket")
+    ,"SP ticket"            = list(new_variable, function(ticket) grepl("SP|S\\.P", ticket), "has_sp_ticket")
+    ,"W  ticket"            = list(new_variable, function(ticket) grepl("W", ticket), "has_w_ticket")
+    ,"SOC ticket"           = list(new_variable, function(ticket) grepl("SOC|S\\.O\\.C", ticket), "has_soc_ticket")
+    ,"STON ticket"          = list(new_variable, function(ticket) grepl("SOTON|STON", ticket), "has_ston_ticket")
+    ,"LINE ticket"          = list(new_variable, function(ticket) grepl("LINE", fixed = TRUE, ticket), "has_ston_ticket")
+    ,"PARIS ticket"         = list(new_variable, function(ticket) grepl("PARIS", fixed = TRUE, ticket), "has_paris_ticket")
 
     ,"Set factors"          = list(column_transformation(factor), c("sex", "embarked"))
     ,"Logical to factor"    = list(column_transformation(as.factor), is.logical)
