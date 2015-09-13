@@ -1,14 +1,19 @@
 # Use local = TRUE when sourcing construct_stage_runner in order to ensure
 # objectdiff package is loaded for stageRunner creation (with tracked_environments).
-construct_stage_runner <- define('construct_stage_runner', local = TRUE)[[1]](resource)
+construct_stage_runner <- Ramd::define('construct_stage_runner')[[1]](resource)
 
-preprocessor <- define('preprocessor')[[1]]
+preprocessor <- Ramd::define('preprocessor')[[1]]
 
 # The models controller:
 #
 # Convert a model into a stagerunner.
-function(args, resource, output, director) {
+function(args, resource, output, director, any_dependencies_modified) {
+  # Support objectdiff::ls behavior.
+  parent.env(parent.env(environment(construct_stage_runner))) <- environment()
+
+  if (is.element("raw", names(args))) return(output)
   require(objectdiff)
+
   message("Loading model: ", resource)
 
   tests <- file.path('test', resource)
@@ -16,7 +21,7 @@ function(args, resource, output, director) {
   has_tests <- FALSE
   if (has_tests) {
     # TODO: (RK) Better sanity checking?
-    testrunner <- stageRunner$new(new.env(), director$resource(tests)$value())
+    testrunner <- stageRunner$new(new.env(), director$resource(tests))
     testrunner$transform(function(fn) {
       library(testthat); force(fn)
       function(after) fn(cached_env, after)
@@ -24,35 +29,22 @@ function(args, resource, output, director) {
   }
 
   model_version <- gsub("^\\w+/", "", resource)
-  if (!identical(resource, director$.cache$last_model)) {
+  if (isTRUE(args$fresh) || !identical(resource, director$cache_get("last_model"))) {
     stagerunner <- construct_stage_runner(output, model_version)
-  } else if (resource_object$any_dependencies_modified()) {
-    message(director:::colourise("Copying cached environments...", "yellow"))
+  } else if (any_dependencies_modified) {
+    message(crayon::yellow("Copying cached environments..."))
     stagerunner <- construct_stage_runner(output, model_version)
-    stagerunner$coalesce(director$.cache$last_model_runner)
-  } else if (!is.element('last_model_runner', names(director$.cache))) {
+    stagerunner$coalesce(director$cache_get("last_model_runner"))
+  } else if (!director$cache_exists("last_model_runner")) {
     stagerunner <- construct_stage_runner(output, model_version)
   } else {
-    stagerunner <- director$.cache$last_model_runner
+    stagerunner <- director$cache_get("last_model_runner")
   }
 
-  if (has_tests) stagerunner$overlay(testrunner, 'tests', flat = TRUE)
+  if (has_tests) stagerunner$overlay(testrunner, "tests", flat = TRUE)
 
-  director$.cache$last_model        <- resource
-  director$.cache$last_model_runner <- stagerunner
+  director$cache_set("last_model", resource)
+  director$cache_set("last_model_runner", stagerunner)
 
-  return(stagerunner)
-
-  # TODO: (RK) Make new run helper that does these steps for a model resource.
-  message("Running model: ", resource)
-
-  args$verbose <- args$verbose %||% TRUE
-  out <- tryCatch(error = function(e) e, do.call(stagerunner$run, args))
-
-  if (inherits(out, 'simpleError'))
-    stop(out$message)
-  else {
-    director$.cache$last_run <- out
-    out
-  }
+  stagerunner
 }
