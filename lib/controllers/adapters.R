@@ -1,10 +1,10 @@
 cache <- TRUE
 
-preprocessor <- function() {
+preprocessor <- function(source_env) {
   if ((name <- tolower(basename(resource))) %in% c('r', 's3', 'file'))
     syberiaStages:::fetch_adapter(name)
   else
-    do.call(base::source, source_args)$value
+    source()
 }
 
 function(input, output, resource, director) {

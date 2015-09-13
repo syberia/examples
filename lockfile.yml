@@ -97,6 +97,7 @@ packages:
     name: director
     version: 0.3.0.4
     repo: robertzk/director
+    ref: documentation_cleanup
   -
     name: syberiaMungebits
     version: 0.2.3

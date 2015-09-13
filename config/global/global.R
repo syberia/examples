@@ -1,18 +1,18 @@
 # Any variables defined in this file will become global variables
 # as soon as this project is loaded. They are meant as shortcuts / mnemonics.
 
-models <- syberia_models
 mungebits <- function(...) director$find(..., method = 'substring', '^lib/mungebits')
 classifiers <- function(...) director$find(..., method = 'substring', '^lib/classifiers')
 adapters <- function(...) director$find(..., method = 'substring', '^lib/adapters')
 controllers <- function(...) director$find(..., method = 'substring', '^lib/controllers')
 shared <- function(...) director$find(..., method = 'substring', '^lib/shared')
 stages <- function(...) director$find(..., method = 'substring', '^lib/stages')
+run <- function(path, ...) runner(path)$run(..., verbose = TRUE)
 
 runner <- function(version) {
   res <- Filter(function(x) grepl('^/?models/', x), director$find(version))[1]
   if (is.na(res)) stop("No model version ", sQuote(version), call. = FALSE)
-  director$resource(res)$value()
+  resource(res)
 }
 
 stest <- function(filter) {
@@ -32,9 +32,9 @@ reload_syberia <- function(...) {
   invisible(TRUE)
 }
 
-last_model <- function() { director$.cache$last_model }
-last_run <- function() { director$.cache$last_run }
-active_runner <- function() { director$.cache$last_model_runner }
+last_model    <- function() { director$cache$get('last_model') }
+last_run      <- function() { director$cache$get('last_run') }
+active_runner <- function() { director$cache$get('last_model_runner') }
 
 keymap <- list(
   A = function() active_runner()$context$data,
