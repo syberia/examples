@@ -1,15 +1,21 @@
+TRAIN_CUTOFF <- 463715
+
 list(
   import = list(
     zipped_url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/00203/YearPredictionMSD.txt.zip'
   ),
 
   data = list(
+     "Rename dep_var"                = list( renamer ~ NULL, c(X1  = 'dep_var'))
+    ,"Rename timbre average vars"    = list( renamer, setNames(paste0('timbre_average_', 1:12), paste0('X', 2:13)))
+    ,"Rename timbre covariance vars" = list( renamer, setNames(paste0('timbre_cov_', 1:78), paste0('X', 14:91)))
+    ,"Select training rows"          = list( select_rows ~ NULL, 1:TRAIN_CUTOFF)
+    ,"Set year as factor"            = list( column_transformation(function(x) as.factor(as.character(x))), c('dep_var'))
   ),
 
   model = list('gbm'
-    , .id_var             = 'X'
-    , distribution        = 'bernoulli'
-    , number_of_trees     = 3000
+    , distribution        = 'multinomial'
+    , number_of_trees     = 6000
     , shrinkage_factor    = 0.005
     , depth               = 5
     , min_observations    = 6

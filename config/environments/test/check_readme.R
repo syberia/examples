@@ -7,7 +7,7 @@ check_readme <- function(env) {
   resources <- Filter(function(x) substring(x, 1, 6) != '/test/', resources)
   resources <- c(resources, dirname(resources))
   resources <- Filter(function(x) file.info(file.path(env$director$root(), x))$isdir, resources)
-  resources <- unique(c(recursive = TRUE, lapply(resources, function(x) 
+  resources <- unique(c(recursive = TRUE, lapply(resources, function(x)
     Reduce(file.path, strsplit(x, '/')[[1]], accumulate = TRUE))))
 
   readmes <- file.path(resources, 'README.md')
@@ -16,6 +16,6 @@ check_readme <- function(env) {
 
   if (length(missing_readmes) > 0) {
     stop(call. = FALSE, "The following directories are missing README.md files:\n\n",
-         paste(director:::colourise(missing_readmes, 'red'), collapse = "\n"))
+         crayon::red(paste(missing_readmes, collapse = "\n")))
   }
 }

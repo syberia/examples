@@ -4,10 +4,9 @@ read <- function(name) {
     director$cache$get(name$resource)
   } else {
     temp <- tempfile(); on.exit(unlink(temp))
-    contents <- gsub('.zip$', '', tail(str_split(name$resource, '/')[[1]], 1))
     download.file(name$resource, temp, method = 'curl')
     message('reading into memory...')
-    data <- read_csv(unz(temp, contents), col_names = FALSE)
+    data <- readr::read_csv(unz(temp, gsub('.zip$', '', basename(name$resource))), col_names = FALSE)
     director$cache$set(name$resource, data)
     data
   }

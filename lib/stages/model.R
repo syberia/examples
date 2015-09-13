@@ -56,7 +56,7 @@ model_stage <- function(model_parameters) {
 
     # Remember train and test IDs.
     if (!is.element(id_var, colnames(modelenv$data))) {
-      stop("Please do not drop ", director:::colourise(id_var, 'red'),
+      warning("Please do not drop ", crayon::red(id_var),
            " so it is possible to compute the train IDs. ",
            "I will drop it for you. ;)\n", call. = FALSE)
     } else {
