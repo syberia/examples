@@ -1,8 +1,9 @@
 packages:
-  - name: R6
-    version: 2.1.0
-    repo: wch/R6
-    ref: v2.1.0
+  -
+    name: readr
+    repo: hadley/readr
+    version: 0.1.0
+    ref: v0.1.0
   -
     name: fortunes
     version: 1.5.2

@@ -1,6 +1,6 @@
 list(
   import = list(
-    url = 'https://raw.githubusercontent.com/haven-jeon/introduction_to_most_usable_pkgs_in_project/master/bicdata/data/titanic.csv'
+    zipped_url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/00203/YearPredictionMSD.txt.zip'
   ),
 
   data = list(
