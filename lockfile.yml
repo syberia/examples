@@ -49,9 +49,8 @@ packages:
     ref: 1.6-4
   -
     name: gbm
-    version: 2.1.6
-    repo: gbm-developers/gbm
-    ref: f5045fb94d1e5f26ffbfe43a68bd0b77e46f2c37
+    version: 2.1.1
+    repo: cran/gbm
   -
     name: pbapply
     version: 1.1.1
