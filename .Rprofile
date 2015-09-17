@@ -11,7 +11,7 @@ Ramd::packages("magrittr", "RJSONIO", "lubridate", "plyr", "timeDate", "arules",
 manual_box <- function(pkg_name, version, github) {
   if (!nzchar(Sys.getenv("CI")) &&
       (!is.element(pkg_name, installed.packages()[, 1]) ||
-       utils::packageVersion(pkg_name) != package_version(version))) {
+       utils::packageVersion(pkg_name) < package_version(version))) {
     args <- list(github)
     if (!grepl("@", fixed = TRUE, github)) {
       args$ref <- version
