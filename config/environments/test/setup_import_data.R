@@ -17,7 +17,7 @@ function(director, optional_tests) {
     models_without_test_data <- setdiff(models, c(models_with_test_data, optional_tests))
 
     if (length(models_without_test_data) > 0) {
-      cat(sep = '', director:::colourise("Running data preparation", "yellow"),
+      cat(sep = '', crayon::yellow("Running data preparation"),
           " on the following models so they can be tested on Travis:\n",
           paste(paste(" *", models_without_test_data), collapse = "\n"), "\n\n")
       for (model in models_without_test_data) {
