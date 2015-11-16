@@ -45,4 +45,11 @@ list(
     "Pre-election post-election t-test" =
         function(df) t.test(df$obama_tmp_pre, df$obama_tmp_post)
   )
+
+  # After the analyze stage, we see that there is a mean difference of +7.984 in Obama
+  # favorability (on an 100-point scale).  A t-test of favorability before and after the
+  # election has p < 0.0001, which indicates statistical significance.
+  #
+  # Therefore we declare that there was an increase in average favorability toward Obama
+  # after he got elected.
 )
