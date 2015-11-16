@@ -95,7 +95,7 @@ packages:
     repo: robertzk/stagerunner
   -
     name: director
-    version: 0.3.0.4
+    version: 0.3.0.5
     repo: robertzk/director
     ref: documentation_cleanup
   -
