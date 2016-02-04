@@ -100,5 +100,5 @@ if (!nzchar(Sys.getenv("R_ROOT"))) {
     lapply(syberia_project_calls, function(call) { do.call(syberia_project, call) })
   }))
   config_files <- c("~/.Rprofile")
-  lapply(config_files, function(x) { if (file.exists(x)) source(x) })
+  invisible(lapply(config_files, function(x) { if (file.exists(x)) source(x) }))
 }
