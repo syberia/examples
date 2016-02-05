@@ -62,14 +62,8 @@ model_stage <- function(model_parameters) {
     } else {
       modelenv$model_stage$id_var <- id_var
       modelenv$model_stage$model$internal$train_ids <- modelenv$data[[id_var]]
-
-      # TODO: (RK) Only record this when model_card stage is present.
-      modelenv$import_stage$env$test_data <-
-        modelenv$import_stage$env$full_data[
-          !modelenv$import_stage$env$full_data[[id_var]] %in% modelenv$data[[id_var]], ]
-      modelenv$import_stage$env$train_data <-
-        modelenv$import_stage$env$full_data[
-          modelenv$import_stage$env$full_data[[id_var]] %in% modelenv$data[[id_var]], ]
+      modelenv$model_stage$model$internal$mean_dv <- mean(modelenv$data$dep_var)
+      modelenv$model_stage$model$internal$sd_dv <- sd(modelenv$data$dep_var)
 
       modelenv$data[[id_var]] <- NULL
     }
@@ -100,7 +94,8 @@ model_stage <- function(model_parameters) {
       attr(modelenv$data, 'mungepieces') %||% list()
     # Since munge was called with train_only, the mungebits are incapable of
     # getting predicted. The line below remedies this.
-    for (ix in seq_along(modelenv$model_stage$model$munge_procedure))
+    for (ix in seq_along(modelenv$model_stage$model$munge_procedure)) {
       modelenv$model_stage$model$munge_procedure[[ix]]$bit$trained <- TRUE
+    }
   }
 }
