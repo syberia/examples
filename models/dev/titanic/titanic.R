@@ -34,8 +34,10 @@ list(
     # The left-hand side defines the informal name of a mungebit that you will see
     # when you run this model.
     # The right-hand side is the mungebit invocation.
-    "Factor to character"   = list(column_transformation(as.character), is.factor)
+    # "create a holdout set"  = list(select_rows ~ NULL, , whole = TRUE)
+    "Factor to character"  = list(column_transformation(as.character), is.factor)
 
+    , "drop body"           = list(drop_variables, 'body')
     # `column_transformation`, `multi_column_transformation`, `new_varialbe` come from [syberiaMungebits] package
     # This particular mungebit creates a new variable - *has_paren*
     ,"has paren in name"    = list(multi_column_transformation(function(name) grepl("(", fixed = TRUE, name)), "name", "has_paren")
@@ -99,6 +101,8 @@ list(
   # The predict function first runs all the mungebits in predict mode,
   # then it checks that you are not predicting on train ids, and then calls the
   # classifier predict method, like `predict.gbm`
+  #
+  # more classifiers here: https://github.com/syberia/modeling.sy/tree/master/lib/classifiers
   model = list('gbm'
     , .id_var             = 'X'
     , distribution        = 'bernoulli'
