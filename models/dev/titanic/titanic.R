@@ -3,6 +3,7 @@
 # A syberia model file is a nested list structure. Top-level lists are called
 # stages. You can create your own stages by writing `lib/stages/my_stage.R`.
 # A stage should return a [stagerunner](github.com/robertzk/stagerunner) object.
+TRAIN_ROWS <- 1000
 
 list(
   # Titanic dataset is fairly popular. Here we're downloading it from a public github repo
@@ -34,10 +35,10 @@ list(
     # The left-hand side defines the informal name of a mungebit that you will see
     # when you run this model.
     # The right-hand side is the mungebit invocation.
-    # "create a holdout set"  = list(select_rows ~ NULL, , whole = TRUE)
-    "Factor to character"  = list(column_transformation(as.character), is.factor)
+    "create a holdout set"  = list(select_rows ~ NULL, 1:TRAIN_ROWS)
+    ,"Factor to character"  = list(column_transformation(as.character), is.factor)
 
-    , "drop body"           = list(drop_variables, 'body')
+    ,"drop body"            = list(drop_variables, 'body')
     # `column_transformation`, `multi_column_transformation`, `new_varialbe` come from [syberiaMungebits] package
     # This particular mungebit creates a new variable - *has_paren*
     ,"has paren in name"    = list(multi_column_transformation(function(name) grepl("(", fixed = TRUE, name)), "name", "has_paren")
