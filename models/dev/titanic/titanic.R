@@ -10,7 +10,7 @@ list(
     # File, R and s3 adapters ship by default. If you want to make a different adapter
     # you can define one by writing `lib/adapters/my_adapter.R`. Here we have made
     # a custom URL adapter
-    url = 'https://raw.githubusercontent.com/haven-jeon/introduction_to_most_usable_pkgs_in_project/master/bicdata/data/titanic.csv'
+    url = "https://raw.githubusercontent.com/haven-jeon/introduction_to_most_usable_pkgs_in_project/master/bicdata/data/titanic.csv"
   ),
 
   # Data stage is a perfect place to transform your dataset prior to modeling

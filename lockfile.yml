@@ -29,7 +29,7 @@ packages:
     repo: robertzk/syberiaStructure
   -
     name: syberiaStages
-    version: 0.2.3
+    version: 0.2.3.9000
     repo: robertzk/syberiaStages
   -
     name: director
@@ -50,3 +50,6 @@ packages:
     name: mungebits2
     version: 0.1.0
     repo: syberia/mungebits2
+  -
+    name: RCurl
+    version: 1.95.4.8
