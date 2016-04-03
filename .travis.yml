@@ -10,6 +10,11 @@ addons:
       - pandoc
 env:
   - TRAVIS=true
+cache:
+  directories:
+    $R_LIBS_USER
+before_script:
+  - mkdir -p "$R_LIBS_USER"
 script:
   - Rscript -e "quit(status = tryCatch({ test_engine(); 0 }, error = function(e) { 1 }))"
 notifications:
