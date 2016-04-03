@@ -9,8 +9,9 @@ addons:
       - r-recommended
       - pandoc
 env:
-  - TRAVIS=true
-  - R_LIBS_USER=~/.R/library
+  - global:
+    - TRAVIS=true
+    - R_LIBS_USER=~/.R/library
 cache:
   directories:
     $R_LIBS_USER
