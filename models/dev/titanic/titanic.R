@@ -52,7 +52,7 @@ list(
     # However sometimes you do need to perform some non-trivial logic. In this case you can
     # write a new mungebit. This one comes from `lib/mungebits/title_factor.R`
     ,"title"                = list(title_factor)
-    ,"fare_title"           = list(multi_column_transformation(function(title, fare) { ave(fare, title, FUN = mean) }), c("title", "fare"), "title_fare")
+    ,"title_fare"           = list(new_variable, function(title, fare) { stats::ave(fare, title, FUN = mean) }, "title_fare")
     ,"fare_diff"            = list(multi_column_transformation(`-`), c("fare", "title_fare"), "fare_diff")
     ,"fare_pct"             = list(multi_column_transformation(`/`), c("fare", "title_fare"), "fare_pct")
     ,"fare_class"           = list(multi_column_transformation(function(klass, fare) { ave(fare, klass, FUN = mean) }), c("pclass", "fare"), "class_fare")
@@ -61,7 +61,7 @@ list(
     ,"cabin_number"         = list(new_variable, function(cabin) as.integer(gsub("[^0-9]+", "", cabin)), "cabin_number")
     ,"cabin_letter"         = list(new_variable, function(cabin) factor(gsub("[^a-zA-Z]+", "", cabin)), "cabin_letter")
     ,"cabin_single_letter"  = list(new_variable, function(cabin_letter) factor(gsub("^(.).*$", "\\1", cabin_letter)), "cabin_single_letter")
-    ,"fare_cabin"           = list(multi_column_transformation(function(title, fare) { ave(fare, title, FUN = mean) }), c("cabin_single_letter", "fare"), "cabin_fare")
+    ,"cabin_fare"           = list(new_variable, function(title_fare, cabin) { stats::ave(title_fare, cabin, FUN = mean) }, "cabin_fare")
     ,"fare_diff_cabin"      = list(multi_column_transformation(`-`), c("fare", "cabin_fare"), "fare_diff_cabin")
     ,"fare_pct_cabin"       = list(multi_column_transformation(`/`), c("fare", "cabin_fare"), "fare_pct_cabin")
 

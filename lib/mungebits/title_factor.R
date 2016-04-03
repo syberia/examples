@@ -13,12 +13,11 @@ predict <- train <- function(data) {
   # [objectdiff](github.com/robertzk/objectdiff)
   # This package allows you to store diffs of the modeling environment,
   # allowing you to debug your data preparation.
-  eval.parent(substitute({
-    data$title <- factor(ifelse(data$is_mister, "mr",
-                         ifelse(data$is_missus, "mrs",
-                         ifelse(data$is_miss, "ms",
-                         ifelse(data$is_master, "master",
-                         ifelse(data$is_rev, "rev",
-                         ifelse(data$is_dr, "dr", "other")))))))
-  }))
+  data$title <- factor(ifelse(data$is_mister, "mr",
+                       ifelse(data$is_missus, "mrs",
+                       ifelse(data$is_miss, "ms",
+                       ifelse(data$is_master, "master",
+                       ifelse(data$is_rev, "rev",
+                       ifelse(data$is_dr, "dr", "other")))))))
+  data
 }

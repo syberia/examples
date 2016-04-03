@@ -15,14 +15,6 @@ packages:
     name: statsUtils
     version: 0.1.3
     repo: robertzk/statsUtils
-  #-
-  #  name: mungebits
-  #  version: 0.3.12
-  #  repo: robertzk/mungebits
-  -
-    name: syberiaMungebits
-    version: 0.2.6
-    repo: robertzk/syberiaMungebits
   -
     name: syberiaStructure
     version: 0.2.2
@@ -48,8 +40,12 @@ packages:
     #ref: engines
   -
     name: mungebits2
-    version: 0.1.0
+    version: 0.1.0.9003
     repo: syberia/mungebits2
+  -
+    name: syberiaMungebits2
+    version: 0.1.0.9001
+    repo: syberia/syberiaMungebits2
   -
     name: RCurl
     version: 1.95.4.8

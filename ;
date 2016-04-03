@@ -11,7 +11,8 @@ addons:
 env:
   - TRAVIS=true
 script:
-  - Rscript -e "quit(status = tryCatch({ test_engine(); 0 }, error = function(e) { 1 }))"
+after_failure:
+- "./travis-tool.sh dump_logs"
 notifications:
   email:
     on_success: change
