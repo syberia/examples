@@ -46,7 +46,7 @@ if (!nzchar(Sys.getenv("R_ROOT"))) {
       try(utils::remove.packages("lockbox", lib = path), silent = TRUE)
     }
     lockbox_tar <- tempfile(fileext = ".tar.gz")
-    lockbox_url <- "https://github.com/robertzk/lockbox/archive/0.2.1.tar.gz"
+    lockbox_url <- "https://github.com/robertzk/lockbox/archive/0.2.2.tar.gz"
     download(lockbox_tar, lockbox_url)
     install.packages(lockbox_tar, repos = NULL, type = "source")
     unlink(lockbox_tar, TRUE, TRUE)
