@@ -14,7 +14,7 @@ env:
     - R_LIBS_USER=~/.R/library
 cache:
   directories:
-    $R_LIBS_USER
+    ~/.R
 before_script:
   - mkdir -p "$R_LIBS_USER"
 script:
