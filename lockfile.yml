@@ -33,9 +33,12 @@ packages:
     repo: syberia/tundra
   -
     name: syberia
-    version: 0.6.1.9001
-    repo: syberia/syberia
-    ref: http_cloning
+    version: 0.6.1.9002
+    remote: local
+    dir: ~/dev/syberia
+    autoinstall: true
+    #repo: syberia/syberia
+    #ref: http_cloning
   -
     name: mungebits2
     version: 0.1.0.9003
