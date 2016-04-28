@@ -23,7 +23,7 @@ packages:
     name: tundra
     version: 0.3.0.9000
     repo: syberia/tundra
-   -
+  -
     name: syberia
     version: 0.6.1.9007
     repo: syberia/syberia
