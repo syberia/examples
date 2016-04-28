@@ -52,7 +52,7 @@ if (!nzchar(Sys.getenv("R_ROOT"))) {
     unlink(lockbox_tar, TRUE, TRUE)
   }
 
-  #lockbox::lockbox("lockfile.yml")
+  lockbox::lockbox("lockfile.yml")
   syberia::syberia_engine()
 
   # Run user-specific Rprofile
