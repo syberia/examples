@@ -1,8 +1,14 @@
-# You can use familiar testthat or testthatsomemore packages
-test_that('it creates a factor var', {
-  mb <- resource() # resource helper fetched the resources for which the test was written
-  data <- data.frame(X = c(1,2,3), is_mister = c(T,F,F), is_master = c(F,T,F), is_miss = c(F,F,T))
-  mp <- mungeplane(data)
-  mb$run(mp)
-  expect_true(is.factor(mp$data$title))
+test_that("title factor creates a title factor", {
+  df <- data.frame(
+    id = seq(7),
+    label = factor(c("mr", "mrs", "ms", "master", "rev", "dr", "other")),
+    is_mister = c(TRUE, rep(FALSE, 6)),
+    is_missus = c(FALSE, TRUE, rep(FALSE, 5)),
+    is_miss   = c(rep(FALSE, 2), TRUE, rep(FALSE, 4)),
+    is_master = c(rep(FALSE, 3), TRUE, rep(FALSE, 3)),
+    is_rev    = c(rep(FALSE, 4), TRUE, rep(FALSE, 2)),
+    is_dr     = c(rep(FALSE, 5), TRUE, FALSE))
+  mb <- resource()
+  munged_df <- mb$run(df)
+  expect_equal(df$label, munged_df$title)
 })

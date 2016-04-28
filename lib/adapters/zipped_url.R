@@ -1,15 +1,15 @@
 read <- function(name) {
-  if (director$cache$exists(name$resource)) {
-    message('Reading from cache...')
-    director$cache$get(name$resource)
+  if (project$cache_exists(name)) {
+    message("Reading from cache...")
+    project$cache_get(name)
   } else {
     temp <- tempfile(); on.exit(unlink(temp))
-    download.file(name$resource, temp, method = 'curl')
-    message('reading into memory...')
-    data <- readr::read_csv(unz(temp, gsub('.zip$', '', basename(name$resource))), col_names = FALSE)
-    director$cache$set(name$resource, data)
+    message("reading into memory...")
+    download.file(name, temp, method = "curl")
+    data <- readr::read_csv(utils::unzip(temp), col_names = FALSE)
+    project$cache_set(name, data)
     data
   }
 }
 
-write <- function(df) stop('Cannot write to a URL, aborting')
+write <- function(df) stop("Cannot write to a URL, aborting")
