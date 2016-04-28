@@ -1,17 +1,14 @@
-test_that("it can read a data set from a zipped URL", {
-  env <- list2env(list(test_key = iris))
-  package_stub("utils", "download.file", function(...) { env[[..1]] }, {
-    adapter <- resource()
-    expect_identical(adapter$read("test_key"), env$test_key,
-      info = "iris should have been read from the test_key in env")
-  })
-})
+testthat::with_mock(
+  `utils::download.file` = function(...) { NULL },
+  `utils::unzip` = function(...) { iris },
+  `readr::read_csv` = function(...) { ..1 }, {
+    test_that("it can read a data set from a zipped URL", {
+      adapter <- resource()
+      expect_identical(adapter$read("test_key"), iris)
+    })
 
-test_that("it cannot write", {
-  env <- new.env()
-  package_stub("utils", "download.file", function(...) { env[[..2]] <- ..1 }, {
-    adapter <- resource()
-    expect_error(adapter$write(iris, "test_key"))
-  })
+    test_that("it cannot write", {
+      adapter <- resource()
+      expect_error(adapter$write(iris, "test_key"))
+    })
 })
-

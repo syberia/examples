@@ -39,3 +39,7 @@ packages:
   -
     name: RCurl
     version: 1.95.4.8
+  -
+    name: readr
+    version: 0.2.2
+    repo: hadley/readr

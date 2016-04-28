@@ -1,7 +1,7 @@
 test_that("title factor creates a title factor", {
   df <- data.frame(
     id = seq(7),
-    label = c("mr", "mrs", "ms", "master", "rev", "dr", "other"),
+    label = factor(c("mr", "mrs", "ms", "master", "rev", "dr", "other")),
     is_mister = c(TRUE, rep(FALSE, 6)),
     is_missus = c(FALSE, TRUE, rep(FALSE, 5)),
     is_miss   = c(rep(FALSE, 2), TRUE, rep(FALSE, 4)),
@@ -10,5 +10,5 @@ test_that("title factor creates a title factor", {
     is_dr     = c(rep(FALSE, 5), TRUE, FALSE))
   mb <- resource()
   munged_df <- mb$run(df)
-  expect_equal(df$label, df$title)
+  expect_equal(df$label, munged_df$title)
 })
