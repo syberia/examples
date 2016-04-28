@@ -41,5 +41,6 @@ packages:
     version: 1.95.4.8
   -
     name: readr
-    version: 0.2.2
+    version: 0.2.2.9000
     repo: hadley/readr
+    ref: ef750db855f9434e78bd89e8944e8b1c547bf23a
