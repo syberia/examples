@@ -41,18 +41,19 @@ if (!nzchar(Sys.getenv("R_ROOT"))) {
   lapply(c("httr", "yaml", "digest", "crayon"), install_if_not_installed)
 
   # Now we install lockbox.
-  if (!is_installed("lockbox")) {
+  if (!is_installed("lockbox") || packageVersion("lockbox") < package_version("0.2.4")) {
     for (path in .libPaths()) {
       try(utils::remove.packages("lockbox", lib = path), silent = TRUE)
     }
     lockbox_tar <- tempfile(fileext = ".tar.gz")
-    lockbox_url <- "https://github.com/robertzk/lockbox/archive/0.2.3.tar.gz"
+    lockbox_url <- "https://github.com/robertzk/lockbox/archive/0.2.4.tar.gz"
     download(lockbox_tar, lockbox_url)
     install.packages(lockbox_tar, repos = NULL, type = "source")
     unlink(lockbox_tar, TRUE, TRUE)
   }
 
   lockbox::lockbox("lockfile.yml")
+  library(bettertrace)  # Make it easier to find errors.
   syberia::syberia_engine()
 
   # Run user-specific Rprofile
