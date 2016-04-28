@@ -18,6 +18,7 @@ cache:
 before_script:
   - mkdir -p "$R_LIBS_USER"
 script:
+  - Rscript -e "library(bettertrace); test_engine()"
   - Rscript -e "quit(status = tryCatch({ test_engine(); 0 }, error = function(e) { message(e); 1 }))"
 notifications:
   email:
