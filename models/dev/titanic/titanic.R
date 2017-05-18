@@ -120,7 +120,6 @@ list(
   # If you need to export to a custom place you need to write a new adapter and
   # implement the `write` function.
   export = list(
-    s3 = 'syberia/titanic/gbm',
     R  = 'titanic'
   )
 )
