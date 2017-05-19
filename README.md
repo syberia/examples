@@ -23,7 +23,7 @@ Happy machine learning!
 
 # About Syberia
 
-[Syberia](http://github.com/robertzk/syberia) is a collection
+[Syberia](http://github.com/syberia/syberia) is a collection
 of R packages that try to enforce [convention over configuration](http://en.wikipedia.org/wiki/Convention_over_configuration)
 and [don't repeat yourself](http://en.wikipedia.org/wiki/Don't_repeat_yourself).
 
@@ -42,7 +42,7 @@ While it should be possible to jump into some basic modeling straight away, it i
 to try to keep in mind that everything is an offspring of the following tools (all of them
 based off [object-oriented programming](http://adv-r.had.co.nz/OO-essentials.html)):
 
-  * **[Stagerunner](http://github.com/robertzk/stagerunner)** - The core object responsible
+  * **[Stagerunner](http://github.com/syberia/stagerunner)** - The core object responsible
     for running models. The native workflow for a typical R programmer when processing data
     or playing with parameters is to re-execute files or pieces of files. While functional,
     this approach has a few drawbacks. The process of re-executing parts manually encourages
@@ -75,7 +75,7 @@ based off [object-oriented programming](http://adv-r.had.co.nz/OO-essentials.htm
     take a look at the [stageRunner interactive tutorial](http://en.wikipedia.org/wiki/Vaporware)
     (**TODO**: Make this.)
 
-  * **[Mungebits](http://github.com/robertzk/mungebits)** - The core objects responsible for
+  * **[Mungebits](http://github.com/syberia/mungebits2)** - The core objects responsible for
     ensuring that the same data preparation occurs in training (development) and prediction
     (production).
 
@@ -119,11 +119,11 @@ based off [object-oriented programming](http://adv-r.had.co.nz/OO-essentials.htm
     `train_args` would be our set of desired variables including the dependent, and `predict_args`
     would be this set excluding the dependent.
 
-    Finally, one can use the [`munge` function](https://github.com/robertzk/mungebits/blob/master/R/munge.r) to execute a list of mungebits in succession
+    Finally, one can use the [`munge` function](https://github.com/syberia/mungebits2/blob/master/R/munge.r) to execute a list of mungebits in succession
     on some `data.frame`. For a more detailed explanation, see the [interactive
     mungebits tutorial](http://en.wikipedia.org/wiki/Vaporware). (**TODO**: Make this.)
 
-  * **[Tundra](http://github.com/robertzk/tundra)** - Training a model and having the correct
+  * **[Tundra](http://github.com/syberia/tundra)** - Training a model and having the correct
     settings during prediction can involve a lot of separate pieces of configuration.
     To solve this problem, a `tundraContainer` is an object that has two methods:
     `train` and `predict`, which take a data set, and run a "model" on that data
@@ -153,7 +153,7 @@ based off [object-oriented programming](http://adv-r.had.co.nz/OO-essentials.htm
     check out the [interactive tundra tutorial](http://en.wikipedia.org/wiki/Vaporware).
     (**TODO**: Make this.)
 
-  * (*Optional*) **[Director](http://github.com/robertzk/director)** - Syberia itself
+  * (*Optional*) **[Director](http://github.com/syberia/director)** - Syberia itself
     is built on top of an object that contains all relevant information about the project:
     files, configurations, tests, etc. While it is not strictly necessary to understand
     the details of a director object to be productive with Syberia, it will help when
