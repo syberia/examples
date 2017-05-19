@@ -15,6 +15,7 @@ list(
   ),
 
   model = list('gbm'
+    , .id_var             = 'dep_var'
     , distribution        = 'multinomial'
     , number_of_trees     = 3000
     , shrinkage_factor    = 0.005

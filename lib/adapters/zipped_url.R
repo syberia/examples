@@ -1,4 +1,5 @@
 read <- function(name) {
+  project <- syberia_project(root())
   if (project$cache_exists(name)) {
     message("Reading from cache...")
     project$cache_get(name)
