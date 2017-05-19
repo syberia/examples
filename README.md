@@ -1,7 +1,29 @@
-Examples of Syberia modeling [![Build Status](https://travis-ci.org/syberia/syberia.svg?branch=master)](https://travis-ci.org/syberia/syberia) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/syberia/syberia/blob/master/LICENSE) [![Join the chat at https://gitter.im/syberia/Lobby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/syberia/Lobby) 
-===============
+# Examples of Syberia modeling [![Build Status](https://travis-ci.org/syberia/syberia.svg?branch=master)](https://travis-ci.org/syberia/syberia) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/syberia/syberia/blob/master/LICENSE) [![Join the chat at https://gitter.im/syberia/Lobby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/syberia/Lobby) 
 
-[Syberia](http://github.com/robertzk/syberia) is a collection
+This repository is in active development as of May 19, 2017. Please check
+back soon for plenty more examples. At the moment, we have two key illustrations:
+
+* [The titanic model](models/dev/titanic): An example based off Kaggle's
+  [titanic problem](https://www.kaggle.com/c/titanic). Commonly considered
+  the "hello world" of binary regression problems.
+* [Some survey analysis](models/dev/survey): An example created by 
+  Syberia contributor [Peter Hurford](https://github.com/peterhurford) where
+  he illustrates how to analyze the 2008 ANES election survey.
+* A solution to the [Give Me Some Credit](https://www.kaggle.com/c/GiveMeSomeCredit)
+  Kaggle competition will be up by Sunday, May 21, 2017.
+
+If you were able to figure out Syberia by following [the guide](https://syberia.io/docs),
+feel free to add your own example models here by building on top of our
+mungebits and classifiers! In the future, we'll have similar example repositories
+for other engines, but for the moment all examples here should demonstrate
+usage of [the modeling engine](https://github.com/syberia/modeling.sy).
+
+See [Syberia](https://github.com/syberia/syberia) for more details. 
+Happy machine learning!
+
+# About Syberia
+
+[Syberia](http://github.com/syberia/syberia) is a collection
 of R packages that try to enforce [convention over configuration](http://en.wikipedia.org/wiki/Convention_over_configuration)
 and [don't repeat yourself](http://en.wikipedia.org/wiki/Don't_repeat_yourself).
 
@@ -20,7 +42,7 @@ While it should be possible to jump into some basic modeling straight away, it i
 to try to keep in mind that everything is an offspring of the following tools (all of them
 based off [object-oriented programming](http://adv-r.had.co.nz/OO-essentials.html)):
 
-  * **[Stagerunner](http://github.com/robertzk/stagerunner)** - The core object responsible
+  * **[Stagerunner](http://github.com/syberia/stagerunner)** - The core object responsible
     for running models. The native workflow for a typical R programmer when processing data
     or playing with parameters is to re-execute files or pieces of files. While functional,
     this approach has a few drawbacks. The process of re-executing parts manually encourages
@@ -53,7 +75,7 @@ based off [object-oriented programming](http://adv-r.had.co.nz/OO-essentials.htm
     take a look at the [stageRunner interactive tutorial](http://en.wikipedia.org/wiki/Vaporware)
     (**TODO**: Make this.)
 
-  * **[Mungebits](http://github.com/robertzk/mungebits)** - The core objects responsible for
+  * **[Mungebits](http://github.com/syberia/mungebits2)** - The core objects responsible for
     ensuring that the same data preparation occurs in training (development) and prediction
     (production).
 
@@ -97,11 +119,11 @@ based off [object-oriented programming](http://adv-r.had.co.nz/OO-essentials.htm
     `train_args` would be our set of desired variables including the dependent, and `predict_args`
     would be this set excluding the dependent.
 
-    Finally, one can use the [`munge` function](https://github.com/robertzk/mungebits/blob/master/R/munge.r) to execute a list of mungebits in succession
+    Finally, one can use the [`munge` function](https://github.com/syberia/mungebits2/blob/master/R/munge.r) to execute a list of mungebits in succession
     on some `data.frame`. For a more detailed explanation, see the [interactive
     mungebits tutorial](http://en.wikipedia.org/wiki/Vaporware). (**TODO**: Make this.)
 
-  * **[Tundra](http://github.com/robertzk/tundra)** - Training a model and having the correct
+  * **[Tundra](http://github.com/syberia/tundra)** - Training a model and having the correct
     settings during prediction can involve a lot of separate pieces of configuration.
     To solve this problem, a `tundraContainer` is an object that has two methods:
     `train` and `predict`, which take a data set, and run a "model" on that data
@@ -131,7 +153,7 @@ based off [object-oriented programming](http://adv-r.had.co.nz/OO-essentials.htm
     check out the [interactive tundra tutorial](http://en.wikipedia.org/wiki/Vaporware).
     (**TODO**: Make this.)
 
-  * (*Optional*) **[Director](http://github.com/robertzk/director)** - Syberia itself
+  * (*Optional*) **[Director](http://github.com/syberia/director)** - Syberia itself
     is built on top of an object that contains all relevant information about the project:
     files, configurations, tests, etc. While it is not strictly necessary to understand
     the details of a director object to be productive with Syberia, it will help when

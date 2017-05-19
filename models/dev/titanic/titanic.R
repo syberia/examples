@@ -1,21 +1,45 @@
-# A trivial titanic regression model
+# An example of a logistic regression model based off Kaggle's Titanic data set.
+# https://www.kaggle.com/c/titanic 
+
+# Let's define some constants we will use below later.
+titles <- c(
+  mr = "Mr.", ms = "Mrs.", mrs = "Ms\\.|Miss\\.",
+  master = "Master.", rev = "Rev.", dr = "Dr."
+)
+fixed_titles <- c("mr", "ms", "master", "rev", "dr")
+
+tickets <- c(
+  pc = "PC", a = "A/", sc = "S.C.", ca = "C\\.A|CA",
+  sp = "SP|S\\.P", w = "W", soc = "SOC|S\\.O\\.C", ston = "SOTON|STON",
+  line = "LINE", paris = "PARIS"
+)
+fixed_tickets <- c("pc", "a", "sc", "w", "line", "paris")
+
+cabin_derivations <- alist(
+  cabin_number    = as.integer(gsub("[^0-9]+", "", cabin)),
+  cabin_letter    = factor(gsub("[^a-zA-Z]+", "", cabin)),
+  cabin_fare      = stats::ave(title_fare, cabin, FUN = mean)
+)
+# This is just so we have a temporary file to save our model to. 
+# At the bottom of this file, you can replace it with a static CSV path.
+syberia_project()$cache_set("titanic_model", tempfile(fileext = ".rds"))
+
 
 # A syberia model file is a nested list structure. Top-level lists are called
 # stages. You can create your own stages by writing `lib/stages/my_stage.R`.
-# A stage should return a [stagerunner](github.com/robertzk/stagerunner) object.
-
+# A stage should return a [stagerunner](github.com/syberia/stagerunner) object.
 list(
-  # Titanic dataset is fairly popular. Here we're downloading it from a public github repo
   import = list(
-    # File, R and s3 adapters ship by default. If you want to make a different adapter
-    # you can define one by writing `lib/adapters/my_adapter.R`. Here we have made
-    # a custom URL adapter
-    url = "https://raw.githubusercontent.com/haven-jeon/introduction_to_most_usable_pkgs_in_project/master/bicdata/data/titanic.csv"
+    url = list(
+      "https://raw.githubusercontent.com/haven-jeon/introduction_to_most_usable_pkgs_in_project/master/bicdata/data/titanic.csv",
+      stringsAsFactors = FALSE
+    )
   ),
+
 
   # Data stage is a perfect place to transform your dataset prior to modeling
   # The default data stage defines a DSL for creating and training
-  # [mungebits](github.com/robertzk/mungebits)
+  # [mungebits](github.com/syberia/mungebits)
   # Yes, you need to train your data preparation!
   # Traditionally data scientists have been preparing models and shipping them to
   # engineers that would reimplement them in Java or another traditional server language.
@@ -28,99 +52,66 @@ list(
   # However, in production you do not have access to the input dataframe anymore!
   # So you need to store the imputed mean somewhere and use that number in production.
   # Data stage takes care of this duality, allowing you to use a plethora of mungebits
-  # from [syberiaMungebits](github.com/robertzk/syberiaMungebits). Or you can write your own
+  # from [syberiaMungebits](github.com/syberia/syberiaMungebits). Or you can write your own
   # and put them in `lib/mungebits/my_mungebit.R`
   data = list(
-    # The left-hand side defines the informal name of a mungebit that you will see
-    # when you run this model.
-    # The right-hand side is the mungebit invocation.
-    "Factor to character"   = list(column_transformation(as.character), is.factor)
-
-    # `column_transformation`, `multi_column_transformation`, `new_varialbe` come from [syberiaMungebits] package
-    # This particular mungebit creates a new variable - *has_paren*
-    ,"has paren in name"    = list(multi_column_transformation(function(name) grepl("(", fixed = TRUE, name)), "name", "has_paren")
-    # This syntax is a little bit cleaner
-    ,"Name length variable" = list(new_variable, function(name) nchar(name), "name_length")
-    ,"mr indicator"         = list(new_variable, function(name) grepl("Mr.", fixed = TRUE, name), "is_mister")
-    ,"mrs indicator"        = list(new_variable, function(name) grepl("Mrs.", fixed = TRUE, name), "is_missus")
-    ,"ms indicator"         = list(new_variable, function(name) grepl("Ms\\.|Miss\\.", name), "is_miss")
-    ,"master indicator"     = list(new_variable, function(name) grepl("Master.", fixed = TRUE, name), "is_master")
-    ,"rev indicator"        = list(new_variable, function(name) grepl("Rev.", fixed = TRUE, name), "is_rev")
-    ,"dr indicator"         = list(new_variable, function(name) grepl("Dr.", fixed = TRUE, name), "is_dr")
-
-    # Sometimes it's easy to write a mungebit by just in-lining an existing component.
-    # However sometimes you do need to perform some non-trivial logic. In this case you can
-    # write a new mungebit. This one comes from `lib/mungebits/title_factor.R`
-    ,"title"                = list(title_factor)
-    ,"title_fare"           = list(new_variable, function(title, fare) { stats::ave(fare, title, FUN = mean) }, "title_fare")
-    ,"fare_diff"            = list(multi_column_transformation(`-`), c("fare", "title_fare"), "fare_diff")
-    ,"fare_pct"             = list(multi_column_transformation(`/`), c("fare", "title_fare"), "fare_pct")
-    ,"fare_class"           = list(multi_column_transformation(function(klass, fare) { ave(fare, klass, FUN = mean) }), c("pclass", "fare"), "class_fare")
-    ,"fare_diff_class"      = list(multi_column_transformation(`-`), c("fare", "class_fare"), "fare_diff_class")
-    ,"fare_pct_class"       = list(multi_column_transformation(`/`), c("fare", "class_fare"), "fare_pct_class")
-    ,"cabin_number"         = list(new_variable, function(cabin) as.integer(gsub("[^0-9]+", "", cabin)), "cabin_number")
-    ,"cabin_letter"         = list(new_variable, function(cabin) factor(gsub("[^a-zA-Z]+", "", cabin)), "cabin_letter")
-    ,"cabin_single_letter"  = list(new_variable, function(cabin_letter) factor(gsub("^(.).*$", "\\1", cabin_letter)), "cabin_single_letter")
-    ,"cabin_fare"           = list(new_variable, function(title_fare, cabin) { stats::ave(title_fare, cabin, FUN = mean) }, "cabin_fare")
-    ,"fare_diff_cabin"      = list(multi_column_transformation(`-`), c("fare", "cabin_fare"), "fare_diff_cabin")
-    ,"fare_pct_cabin"       = list(multi_column_transformation(`/`), c("fare", "cabin_fare"), "fare_pct_cabin")
-
-    ,"PC ticket"            = list(new_variable, function(ticket) grepl("PC ", fixed = TRUE, ticket), "has_pc_ticket")
-    ,"A  ticket"            = list(new_variable, function(ticket) grepl("A/", fixed = TRUE, ticket), "has_a_ticket")
-    ,"SC ticket"            = list(new_variable, function(ticket) grepl("S.C.", fixed = TRUE, ticket), "has_sc_ticket")
-    ,"CA ticket"            = list(new_variable, function(ticket) grepl("C.A", fixed = TRUE, ticket), "has_ca_ticket")
-    ,"CA ticket"            = list(new_variable, function(ticket) grepl("C\\.A|CA", ticket), "has_ca_ticket")
-    ,"SP ticket"            = list(new_variable, function(ticket) grepl("SP|S\\.P", ticket), "has_sp_ticket")
-    ,"W  ticket"            = list(new_variable, function(ticket) grepl("W", ticket), "has_w_ticket")
-    ,"SOC ticket"           = list(new_variable, function(ticket) grepl("SOC|S\\.O\\.C", ticket), "has_soc_ticket")
-    ,"STON ticket"          = list(new_variable, function(ticket) grepl("SOTON|STON", ticket), "has_ston_ticket")
-    ,"LINE ticket"          = list(new_variable, function(ticket) grepl("LINE", fixed = TRUE, ticket), "has_ston_ticket")
-    ,"PARIS ticket"         = list(new_variable, function(ticket) grepl("PARIS", fixed = TRUE, ticket), "has_paris_ticket")
-
-    ,"Set factors"          = list(column_transformation(factor), c("sex", "embarked"))
-    ,"Logical to factor"    = list(column_transformation(as.factor), is.logical)
-    ,"Drop character vars"  = list(drop_variables, is.character)
-    ,"Restore levels"       = list(restore_categorical_variables)
-    ,"Rename dep_var"       = list(renamer, c("survived" = "dep_var"))
+    "has paren in name"       = list(multi_column_transformation(function(name) grepl("(", fixed = TRUE, name)), "name", "has_paren")
+   ,"Name length variable"    = list(new_variable, function(name) nchar(name), "name_length")
+   ,"Formal title"            = list(regex_factor, "name", "title", cases = titles, fixed = fixed_titles)
+   ,"Ticket type"             = list(regex_factor, "ticket", "ticket_type", cases = tickets, fixed = fixed_tickets)
+   ,"title_fare variable"     = list(new_variable, function(title, fare) { stats::ave(fare, title, FUN = mean) }, "title_fare")
+   ,"class_fare"              = list(multi_column_transformation(function(klass, fare) { stats::ave(fare, klass, FUN = mean) }), c("pclass", "fare"), "class_fare")
+   ,"Some simple derivations" = list(atransform, alist(fare_diff = fare - title_fare, fare_pct = fare / title_fare, fare_diff_class = fare - class_fare, fare_pct_class = fare / class_fare))
+   ,"Derived cabin variables" = list(atransform, cabin_derivations)
+   ,"Cabin diff and pct"      = list(atransform, alist(fare_diff_cabin = fare - cabin_fare, fare_pct_cabin = fare / cabin_fare))
+   ,"cabin_single_letter"     = list(new_variable, function(cabin_letter) factor(gsub("^(.).*$", "\\1", cabin_letter)), "cabin_single_letter")
+   ,"Set factors"             = list(!factor, c("sex", "embarked"))
+   ,"Logical to factor"       = list(!as.factor, is.logical)
+   ,"Drop character vars"     = list(drop_variables, is.character)
+   ,"Restore levels"          = list(restore_categorical_variables, is.factor)
+   ,"Rename dep_var"          = list(renamer, c("survived" = "dep_var"))
   ),
 
   # Once the data is prepared and is in the right format we are ready to
   # do the modeling itself.
   # You can use any R package to create a *classifier*.
   # Classifiers are determined by the `train` and `predict` functions.
-  # The output of the model stage is a [tundraContainer](github.com/robertzk/tundra)
+  # The output of the model stage is a [tundraContainer](github.com/syberia/tundra)
   # A tundracontainer is an object that contains all the information necessary
   # to make a prediction: the munge procedure, the classifier object, as well as
   # the ids of the variables that were in training. This helps to ensure that
   # you are not predicting on the same ids that you used for training,
   # helping you make a more accurate validation. You can set `.is_var` to the id column name
   # or it will default to 'id'.
-  # The most interesting part about a tundracontainer is it's predict function.
+  # The most interesting part about a tundracontainer is its predict function.
   # The predict function first runs all the mungebits in predict mode,
   # then it checks that you are not predicting on train ids, and then calls the
   # classifier predict method, like `predict.gbm`
   model = list('gbm'
     , .id_var             = 'X'
     , distribution        = 'bernoulli'
-    , number_of_trees     = 3000
-    , shrinkage_factor    = 0.005
+    , number_of_trees     = 100  # Set to 3000 for better model.
+    , shrinkage_factor    = 0.05 # Set to 0.005 for better model.
     , depth               = 5
     , min_observations    = 6
     , train_fraction      = 1
     , bag_fraction        = 0.5
-    , cv                  = TRUE
-    , cv_folds            = 5
-    , number_of_cores     = 4
-    , perf_method         = 'cv'
+    , cv                  = FALSE # Uncomment lines below for cv.
+  # , cv_folds            = 5 # For CV and/or > 1 cores need GBM globally installed.
+  # , number_of_cores     = 1
+    , perf_method         = 'OOB'
     , prediction_type     = 'response'
   ),
+
 
   # When all is said and done you need to export the result of your hard work.
   # This stage uses the same adapters as the *import* stage.
   # If you need to export to a custom place you need to write a new adapter and
   # implement the `write` function.
   export = list(
-    s3 = 'syberia/titanic/gbm',
-    R  = 'titanic'
+    R    = "titanic",
+    # Change to fixed file like ~/tmp/model.rds
+    file = syberia_project()$cache_get("titanic_model")
   )
 )
+
