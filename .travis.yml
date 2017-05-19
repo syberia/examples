@@ -18,6 +18,15 @@ cache:
 before_script:
   - rm -rf "/home/travis/.R/.syberia"
   - mkdir -p "$R_LIBS_USER"
+  - Rscript -e 'if (!require("devtools")) install.packages("devtools", repos = "http://cran.rstudio.com/")'
+  - Rscript -e 'if (!require("plyr")) install.packages("plyr", repos = "http://cran.rstudio.com/")'
+  - Rscript -e 'if (!require("pryr")) install.packages("pryr", repos = "http://cran.rstudio.com/")'
+  - Rscript -e 'if (!require("XML")) install.packages("XML", repos = "http://cran.rstudio.com/")'
+  - Rscript -e 'if (!require("httr")) install.packages("httr", repos = "http://cran.rstudio.com/")'
+  - Rscript -e 'if (!require("yaml")) install.packages("yaml", repos = "http://cran.rstudio.com/")'
+  - Rscript -e 'if (!require("digest")) install.packages("digest", repos = "http://cran.rstudio.com/")'
+  - Rscript -e 'if (!require("crayon")) install.packages("crayon", repos = "http://cran.rstudio.com/")'
+  - Rscript -e 'if (!require("RCurl")) install.packages("RCurl", repos = "http://cran.rstudio.com/")'
 script: "Rscript -e 'library(syberia); library(methods); devtools::with_options(list(stub = 1), force); syberia::syberia_engine(); quit(status = tryCatch({ syberia::test_engine(); 0 }, error = function(e) { message(e); message(bettertrace::stacktrace()); 1 }));'"
 notifications:
   email:
