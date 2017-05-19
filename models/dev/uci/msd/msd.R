@@ -6,7 +6,8 @@ list(
   ),
 
   data = list(
-     "Rename dep_var"                = list( renamer ~ NULL, c(X1  = 'dep_var'))
+    "Rename dep_var"                 = list( renamer ~ NULL, c(X1  = 'dep_var'))
+    ,"Create ID var"                 = list(multi_column_transformation(seq_along), "dep_var", "id")
     ,"Rename timbre average vars"    = list( renamer, setNames(paste0('timbre_average_', 1:12), paste0('X', 2:13)))
     ,"Rename timbre covariance vars" = list( renamer, setNames(paste0('timbre_cov_', 1:78), paste0('X', 14:91)))
     ,"Select training rows"          = list( select_rows ~ NULL, 1:TRAIN_CUTOFF)
@@ -15,7 +16,7 @@ list(
   ),
 
   model = list('gbm'
-    , .id_var             = 'dep_var'
+    , .id_var             = 'id'
     , distribution        = 'multinomial'
     , number_of_trees     = 3000
     , shrinkage_factor    = 0.005
