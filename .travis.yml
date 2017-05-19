@@ -18,6 +18,7 @@ cache:
 before_script:
   - rm -rf "/home/travis/.R/.syberia"
   - mkdir -p "$R_LIBS_USER"
+  - Rscript -e 'if (!require("RCurl")) install.packages("RCurl", repos = "http://cran.rstudio.com/")'
 script: "Rscript -e 'library(syberia); library(methods); devtools::with_options(list(stub = 1), force); syberia::syberia_engine(); quit(status = tryCatch({ syberia::test_engine(); 0 }, error = function(e) { message(e); message(bettertrace::stacktrace()); 1 }));'"
 notifications:
   email:
