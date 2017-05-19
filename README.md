@@ -1,5 +1,28 @@
 # Examples of Syberia modeling [![Build Status](https://travis-ci.org/syberia/syberia.svg?branch=master)](https://travis-ci.org/syberia/syberia) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/syberia/syberia/blob/master/LICENSE) [![Join the chat at https://gitter.im/syberia/Lobby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/syberia/Lobby) 
 
+This repository is in active development as of May 19, 2017. Please check
+back soon for plenty more examples. At the moment, we have two key illustrations:
+
+* [The titanic model](models/dev/titanic): An example based off Kaggle's
+  [titanic problem](https://www.kaggle.com/c/titanic). Commonly considered
+  the "hello world" of binary regression problems.
+* [Some survey analysis](models/dev/survey): An example created by 
+  Syberia contributor [Peter Hurford](https://github.com/peterhurford) where
+  he illustrates how to analyze the 2008 ANES election survey.
+* A solution to the [Give Me Some Credit](https://www.kaggle.com/c/GiveMeSomeCredit)
+  Kaggle competition will be up by Sunday, May 21, 2017.
+
+If you were able to figure out Syberia by following [the guide](https://syberia.io/docs),
+feel free to add your own example models here by building on top of our
+mungebits and classifiers! In the future, we'll have similar example repositories
+for other engines, but for the moment all examples here should demonstrate
+usage of [the modeling engine](https://github.com/syberia/modeling.sy).
+
+See [Syberia](https://github.com/syberia/syberia) for more details. 
+Happy machine learning!
+
+# About Syberia
+
 [Syberia](http://github.com/robertzk/syberia) is a collection
 of R packages that try to enforce [convention over configuration](http://en.wikipedia.org/wiki/Convention_over_configuration)
 and [don't repeat yourself](http://en.wikipedia.org/wiki/Don't_repeat_yourself).
