@@ -1,5 +1,6 @@
-Your new Syberia project
+Examples of Syberia modeling [![Build Status](https://travis-ci.org/syberia/syberia.svg?branch=master)](https://travis-ci.org/syberia/syberia) 
 ===============
+
 [Syberia](http://github.com/robertzk/syberia) is a collection
 of R packages that try to enforce [convention over configuration](http://en.wikipedia.org/wiki/Convention_over_configuration)
 and [don't repeat yourself](http://en.wikipedia.org/wiki/Don't_repeat_yourself).
