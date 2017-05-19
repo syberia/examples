@@ -21,11 +21,11 @@ packages:
     repo: syberia/director
   -
     name: tundra
-    version: 0.3.0.9000
+    version: 0.3.1.9000
     repo: syberia/tundra
   -
     name: syberia
-    version: 0.6.1.9007
+    version: 0.6.1.9009
     repo: syberia/syberia
     ref: 0.6-dev
   -
