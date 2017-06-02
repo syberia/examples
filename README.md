@@ -1,6 +1,6 @@
 # Examples of Syberia modeling [![Build Status](https://travis-ci.org/syberia/syberia.svg?branch=master)](https://travis-ci.org/syberia/syberia) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/syberia/syberia/blob/master/LICENSE) [![Join the chat at https://gitter.im/syberia/Lobby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/syberia/Lobby) 
 
-This repository is in active development as of May 19, 2017. Please check
+This repository is in active development as of July 19, 2017. Please check
 back soon for plenty more examples. At the moment, we have two key illustrations:
 
 * [The titanic model](models/dev/titanic): An example based off Kaggle's
@@ -10,7 +10,7 @@ back soon for plenty more examples. At the moment, we have two key illustrations
   Syberia contributor [Peter Hurford](https://github.com/peterhurford) where
   he illustrates how to analyze the 2008 ANES election survey.
 * A solution to the [Give Me Some Credit](https://www.kaggle.com/c/GiveMeSomeCredit)
-  Kaggle competition will be up by Sunday, May 21, 2017.
+  Kaggle competition will be up by Sunday, July 21, 2017.
 
 If you were able to figure out Syberia by following [the guide](https://syberia.io/docs),
 feel free to add your own example models here by building on top of our
