@@ -1,5 +1,5 @@
 language: r
-cache: packages
+dist: trusty
 sudo: false
 r:
     - oldrel
@@ -10,6 +10,13 @@ repos:
 env:
   - global:
     - R_LIBS_USER=~/.R/library
+
+r_binary_packages:
+    - httr
+    - yaml
+    - digest
+    - crayon
+
 r_github_packages:
     - syberia/mungebits2
     - syberia/stagerunner
@@ -17,13 +24,17 @@ r_github_packages:
     - syberia/director
     - syberia/syberia
 
+latex: false
 cache:
   directories:
-    ~/.R
+      - ~/.R
+  packages: true
+
 before_script:
     - rm -rf "/home/travis/.R/.syberia"
     - mkdir -p "$R_LIBS_USER"
-script: Rscript -e 'library(syberia); library(methods); devtools::with_options(list(stub
+script: 
+    - Rscript -e 'library(syberia); library(methods); devtools::with_options(list(stub
   = 1), force); syberia::syberia_engine(); quit(status = tryCatch({ syberia::test_engine();
   0 }, error = function(e) { message(e); message(bettertrace::stacktrace()); 1 }));'
 
