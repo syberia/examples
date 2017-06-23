@@ -3,10 +3,10 @@
 
 # Let's define some constants we will use below later.
 titles <- c(
-  mr = "Mr.", ms = "Mrs.", mrs = "Ms\\.|Miss\\.",
+  mr = "Mr.", mrs = "Mrs.", ms = "Ms\\.|Miss\\.",
   master = "Master.", rev = "Rev.", dr = "Dr."
 )
-fixed_titles <- c("mr", "ms", "master", "rev", "dr")
+fixed_titles <- c("mr", "mrs", "master", "rev", "dr")
 
 tickets <- c(
   pc = "PC", a = "A/", sc = "S.C.", ca = "C\\.A|CA",
