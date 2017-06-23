@@ -1,12 +1,10 @@
 language: r
 dist: trusty
-sudo: false
+sudo: required
 r:
     - oldrel
     - release
     - devel
-repos:
-  CRAN: https://cloud.r-project.org
 env:
   - global:
     - R_LIBS_USER=~/.R/library
@@ -30,9 +28,6 @@ cache:
       - ~/.R
   packages: true
 
-before_script:
-    - rm -rf "/home/travis/.R/.syberia"
-    - mkdir -p "$R_LIBS_USER"
 script: 
     - Rscript -e 'library(syberia); library(methods); devtools::with_options(list(stub
   = 1), force); syberia::syberia_engine(); quit(status = tryCatch({ syberia::test_engine();
