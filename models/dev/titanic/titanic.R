@@ -109,13 +109,9 @@ list(
   # If you need to export to a custom place you need to write a new adapter and
   # implement the `write` function.
   export = list(
-<<<<<<< HEAD
-    R  = 'titanic'
-=======
     R    = "titanic",
     # Change to fixed file like ~/tmp/model.rds
     file = syberia_project()$cache_get("titanic_model")
->>>>>>> master
   )
 )
 
