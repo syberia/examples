@@ -18,3 +18,4 @@ test_that("it cannot write", {
       expect_error(adapter$write(iris, "test_key"))
     })
   })
+
