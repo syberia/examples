@@ -1,5 +1,3 @@
-*.csv
-**/*.csv
 .Rdata
 .Rhistory
 .Rproj.user
