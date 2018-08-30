@@ -25,3 +25,26 @@ notifications:
   email:
     on_success: change
     on_failure: change
+
+language: r
+cache: packages
+sudo: false
+r:
+  - oldrel
+  - release
+  - devel
+repos:
+  CRAN: https://cloud.r-project.org
+env:
+  - global:
+    - TRAVIS=true
+    - WARNINGS_ARE_ERRORS=1
+    - LINTR_COMMENT_BOT=false
+install:
+  - rm -rf "/home/travis/.R/.syberia"
+script:
+  - Rscript -e 'library(syberia); library(methods); devtools::with_options(list(stub = 1), force); syberia::syberia_engine(); quit(status = tryCatch({ syberia::test_engine(); 0 }, error = function(e) { message(e); message(bettertrace::stacktrace()); 1 }));'
+notifications:
+  email:
+    on_success: change
+    on_failure: change
