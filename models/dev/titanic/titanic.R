@@ -56,6 +56,7 @@ list(
   # and put them in `lib/mungebits/my_mungebit.R`
   data = list(
     "has paren in name"       = list(multi_column_transformation(function(name) grepl("(", fixed = TRUE, name)), "name", "has_paren")
+   ,"factors to strings"      = list(!as.character, c("name", "title", "ticket"))
    ,"Name length variable"    = list(new_variable, function(name) nchar(name), "name_length")
    ,"Formal title"            = list(regex_factor, "name", "title", cases = titles, fixed = fixed_titles)
    ,"Ticket type"             = list(regex_factor, "ticket", "ticket_type", cases = tickets, fixed = fixed_tickets)
