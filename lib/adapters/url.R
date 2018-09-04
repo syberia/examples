@@ -8,7 +8,7 @@ read <- function(options) {
   }
 
   options$text <- RCurl::getURL(name)
-  do.call(utils::read.csv, options)
+  do.call(readr::read_csv, options)
 }
 
 write <- function(...) {
