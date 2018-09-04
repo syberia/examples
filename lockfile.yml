@@ -38,7 +38,7 @@ packages:
     repo: syberia/syberiaMungebits2
   -
     name: RCurl
-    version: 1.95.4.8
+    version: 1.95.4.11
   -
     name: readr
     version: 0.2.2.9000
